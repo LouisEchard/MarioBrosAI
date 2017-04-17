@@ -5,7 +5,7 @@ from pygame.locals import *
 
 from data import *
 import math
-
+from AI2 import actionSelector
 TOP_SIDE    = 0
 BOTTOM_SIDE = 2
 LEFT_SIDE   = 3
@@ -150,13 +150,16 @@ class Player(Collidable):
     def stop_attacking(self):
         self.shooting = False
 
-    def update(self):
+    def update(self,playerRef, optimizing=False):
         self.frame += 1
         self.still_timer -= 1
         self.hit_timer -= 1
         dx = 0
-        key = pygame.key.get_pressed()
-
+        if not optimizing:
+            key = pygame.key.get_pressed()
+        if optimizing:
+            key = actionSelector.getAction_0(2,aRandom=True)
+        
         if key[K_z] and not self.springing:
             self.jump_accel = 0.3
         else:
@@ -182,6 +185,8 @@ class Player(Collidable):
                 if key[K_RIGHT]:
                     dx = 1
                     self.facing = dx
+                if key[K_z] and optimizing==True:
+                    playerRef.jump()
 
         if self.facing > 0:
             self.image = self.right_images[0]

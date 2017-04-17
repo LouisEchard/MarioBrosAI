@@ -11,6 +11,7 @@ from data import *
 from sprites import *
 from level import *
 
+
 def RelRect(actor, camera):
     return Rect(actor.rect.x-camera.rect.x, actor.rect.y-camera.rect.y, actor.rect.w, actor.rect.h)
 
@@ -296,8 +297,8 @@ class Game(object):
         for s in self.sprites:
             pygame.sprite.Sprite.kill(s)
 
-    def main_loop(self):
-
+    def main_loop(self, optimizing=True):
+  
         while self.running:
             BaddieShot.player = self.player
             CannonShot.player = self.player
@@ -311,7 +312,10 @@ class Game(object):
             self.clock.tick(60)
             self.camera.update()
             for s in self.sprites:
-                s.update()    
+                if isinstance(s, Player):
+                    s.update(self.player, optimizing)
+                else:
+                    s.update()      
             
             for b in self.bombs:
                 if self.player.rect.colliderect(b.rect):
@@ -482,15 +486,20 @@ class Game(object):
                 self.time -= 0.060
             if self.time <= 0:
                 self.player.hit()
-                                              
-            for e in pygame.event.get():
-                if e.type == QUIT:
-                    sys.exit()
-                if e.type == KEYDOWN:
-                    if e.key == K_ESCAPE:
-                        self.end()
-                    if e.key == K_z:
-                        self.player.jump()     
+            if not optimizing:                        
+                for e in pygame.event.get():
+                    if e.type == QUIT:
+                        sys.exit()
+                    if e.type == KEYDOWN:
+                        if e.key == K_ESCAPE:
+                            self.end()
+                        if e.key == K_z:
+                            self.player.jump() 
+
+               
+                #listen to the optimizer
+                
+                    
             if not self.running:
                 return
             self.screen.blit(self.bg, ((-self.camera.rect.x/1)%640, 0))
