@@ -54,8 +54,20 @@ def MarioAction(anEnum, aKey):
     return aKey
 #     @classmethod
 #     @getAction.register(object, int)
-def getAction_0(actionNumber, aRandom=False):
+def getAction_0(actionNumber,aGame, aRandom=False ):
+    
+    
     myKey = [False]*1000
+    
+    myListOfBaddies = []
+    myPlayerRect = aGame.player.rect
+    for b in aGame.baddies:  
+        if b.rect.colliderect(aGame.camera.rect):  
+            myListOfBaddies.append(b.rect)
+    
+    
+    
+    
     if aRandom:
         myEnum = random.choice(list(validDecisions))#[TOTAL_ACTIONS*random.random]
     else :

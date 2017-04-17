@@ -10,4 +10,5 @@ def main():
     pygame.display.set_icon(pygame.image.load(data.filepath("bowser1.gif")))
     pygame.display.set_caption("Super Mario Bros (DEMO)")
     screen = pygame.display.set_mode((640, 480))
+    
     menu.Menu(screen)

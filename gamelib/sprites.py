@@ -150,7 +150,7 @@ class Player(Collidable):
     def stop_attacking(self):
         self.shooting = False
 
-    def update(self,playerRef, optimizing=False):
+    def update(self,playerRef,aGame, optimizing=False, ):
         self.frame += 1
         self.still_timer -= 1
         self.hit_timer -= 1
@@ -158,7 +158,7 @@ class Player(Collidable):
         if not optimizing:
             key = pygame.key.get_pressed()
         if optimizing:
-            key = actionSelector.getAction_0(2,aRandom=True)
+            key = actionSelector.getAction_0(2,aGame,aRandom=True)
         
         if key[K_z] and not self.springing:
             self.jump_accel = 0.3

@@ -313,7 +313,7 @@ class Game(object):
             self.camera.update()
             for s in self.sprites:
                 if isinstance(s, Player):
-                    s.update(self.player, optimizing)
+                    s.update(self.player,self, optimizing)
                 else:
                     s.update()      
             
