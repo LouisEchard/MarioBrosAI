@@ -21,7 +21,6 @@ class validDecisions(Enum):
 
 TOTAL_ACTIONS = 6
 actionNumber = int()
-action = []
 
 def __init__(self, actionNumber, *keys):
     self.actionNumber = actionNumber
@@ -54,31 +53,49 @@ def MarioAction(anEnum, aKey):
     return aKey
 #     @classmethod
 #     @getAction.register(object, int)
-def getAction_0(actionNumber,aGame, aRandom=False ):
+def getAction_0(aGame, aRandom=False):
     
     
     myKey = [False]*1000
     
     myListOfBaddies = []
+    myListOfCoins = []
     myPlayerRect = aGame.player.rect
+    
     for b in aGame.baddies:  
         if b.rect.colliderect(aGame.camera.rect):  
             myListOfBaddies.append(b.rect)
     
-    
+    for c in aGame.coins:
+        if aGame.player.rect.colliderect(c.rect):
+            myListOfCoins.append(c.rect)
     
     
     if aRandom:
         myEnum = random.choice(list(validDecisions))#[TOTAL_ACTIONS*random.random]
     else :
+        theBest=validDecisions.DO_NOTHING
+        theBestValue=-1000
+        for context in aGame.theDecisionMaker:
+            if(context[0]==myListOfBaddies and context[1]==myListOfCoins):
+                if(aGame.theDecisionMaker.get(context)>theBestValue):
+                    theBest=context[2]
+                    theBestValue=aGame.theDecisionMaker.get(context)
+                
+        
         myEnum = list(validDecisions)[actionNumber]
         
+    saveDecision([myListOfBaddies, myListOfCoins, myEnum], aGame)
+    
+    
     return MarioAction(myEnum,myKey)
 
 
 
 
-
+def saveDecision(anEnum, aGame):
+    aGame.theCumActions.append(anEnum)
+    
 
 
 def getDecision(randomly=False):

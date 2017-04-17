@@ -182,7 +182,9 @@ class Game(object):
         Lava.groups = self.sprites
         Bridge.groups = self.sprites, self.platforms, self.nomoveplatforms
         Chain.groups = self.sprites,
-
+        self.theCumActions = []
+        self.theDecisionMaker = {}
+        self.reward = []
         self.highscore = 0
         self.score = 0
         self.lives = 3
@@ -291,15 +293,20 @@ class Game(object):
         play_music("gameover.ogg")
         cutscene(self.screen, ["Game Over"])
         self.end()
-
+        
       
     def clear_sprites(self):
         for s in self.sprites:
             pygame.sprite.Sprite.kill(s)
+            
+    def QlearnSpread(self, aScore):
+        for actions in self.theCumActions:
+            self.theDecisionMaker.update(actions, self.theDecisionMaker.get(actions)+aScore)
 
     def main_loop(self, optimizing=True):
-  
+        counterInLoop=0
         while self.running:
+            counterInLoop=counterInLoop+1
             BaddieShot.player = self.player
             CannonShot.player = self.player
             CannonShotbig.player = self.player
@@ -518,6 +525,22 @@ class Game(object):
                     self.lives -= 1
                     self.redo_level()
             pygame.display.flip()
+            
+            
+            self.reward.append(self.score)
+            goodTimeToSpreadScore=False
+            
+            if counterInLoop>30:
+                counterInLoop=0
+                goodTimeToSpreadScore=True
+            
+            if goodTimeToSpreadScore:
+                self.QlearnSpread(sum(self.reward))
+                self.theCumActions=[]
+                goodTmeToSpreadScore=False
+                self.reward=[]
+            
+            
             if not self.running:
                 return
 
@@ -544,3 +567,5 @@ class Game(object):
         ren2 = self.font.render("Time: %d" % self.time, 1, Color("#ffffff"))
         self.screen.blit(ren1, (485, 60))
         self.screen.blit(ren2, (485, 60))
+        
+    
