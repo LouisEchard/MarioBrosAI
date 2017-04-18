@@ -4,6 +4,12 @@ from enum import Enum
 from bokeh.util.session_id import random
 from pygame.constants import K_LEFT, K_RIGHT, K_z
 
+
+class HashableRect(pygame.Rect):
+    def __hash__(self):
+        return hash(tuple(self))
+
+
 class validDecisions(Enum):
 
     DO_NOTHING = 0
@@ -64,17 +70,17 @@ def getAction_0(aGame, aRandom=False):
     
     for b in aGame.baddies:  
         if b.rect.colliderect(aGame.camera.rect):  
-            myListOfBaddies.append(b.rect)
+            myListOfBaddies.append(HashableRect(b.rect))
     
     for c in aGame.coins:
         if aGame.player.rect.colliderect(c.rect):
-            myListOfCoins.append(c.rect)
+            myListOfCoins.append(HashableRect(c.rect))
     
     
     if aRandom:
         myEnum = random.choice(list(validDecisions))#[TOTAL_ACTIONS*random.random]
     else :
-        theBest=validDecisions.DO_NOTHING
+        theBest=random.choice(list(validDecisions))
         theBestValue=-1000
         for context in aGame.theDecisionMaker:
             if(context[0]==myListOfBaddies and context[1]==myListOfCoins):
@@ -83,9 +89,9 @@ def getAction_0(aGame, aRandom=False):
                     theBestValue=aGame.theDecisionMaker.get(context)
                 
         
-        myEnum = list(validDecisions)[actionNumber]
+        myEnum =theBest# list(validDecisions)[actionNumber]
         
-    saveDecision([myListOfBaddies, myListOfCoins, myEnum], aGame)
+    saveDecision((tuple(myListOfBaddies), tuple(myListOfCoins), (myEnum,)), aGame)
     
     
     return MarioAction(myEnum,myKey)

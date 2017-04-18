@@ -158,7 +158,7 @@ class Player(Collidable):
         if not optimizing:
             key = pygame.key.get_pressed()
         if optimizing:
-            key = actionSelector.getAction_0(aGame,aRandom=True)
+            key = actionSelector.getAction_0(aGame,aRandom=False)
         
         if key[K_z] and not self.springing:
             self.jump_accel = 0.3
