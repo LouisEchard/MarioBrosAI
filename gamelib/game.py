@@ -10,11 +10,12 @@ from cutscenes import *
 from data import *
 from sprites import *
 from level import *
-
+from AI2.QLearning import QLearning
 
 def RelRect(actor, camera):
     return Rect(actor.rect.x-camera.rect.x, actor.rect.y-camera.rect.y, actor.rect.w, actor.rect.h)
 
+    
 class Camera(object):
     def __init__(self, player, width):
         self.player = player
@@ -50,7 +51,7 @@ def get_saved_level():
 class Game(object):
 
     def __init__(self, screen, continuing=False):
-
+        self.movementPoint=0.0
         self.screen = screen
         self.sprites = pygame.sprite.OrderedUpdates()
         self.players = pygame.sprite.OrderedUpdates()
@@ -183,11 +184,14 @@ class Game(object):
         Bridge.groups = self.sprites, self.platforms, self.nomoveplatforms
         Chain.groups = self.sprites,
         self.theCumActions = []
+        self.counterInLoop=0
+        self.theQLearner = QLearning('TheMapper')
+        self.oldPosition=0.0
         self.theDecisionMaker = {}
         self.reward = []
         self.highscore = 0
         self.score = 0
-        self.lives = 3
+        self.lives = 300
         self.lvl   = 1
         if continuing:
             self.lvl = get_saved_level()
@@ -203,7 +207,7 @@ class Game(object):
         self.baddie_sound = load_sound("jump2.ogg")
         self.coin_sound = load_sound("coin.ogg")
         self.up_sound = load_sound("1up.ogg")
-        self.time = 400
+        self.time = 40000
         self.running = 1
         self.booming = True
         self.boom_timer = 0
@@ -238,7 +242,7 @@ class Game(object):
         play_music(self.music)
              
     def next_level(self):
-        self.time = 400
+        self.time = 40000
         self.booming = True
         self.boom_timer = 0
         try:
@@ -264,7 +268,7 @@ class Game(object):
     def redo_level(self):
         self.booming = False
         self.boom_timer = 0
-        self.time = 400
+        self.time = 40000
         if self.running:
             self.clear_sprites()
             self.level = Level(self.lvl)
@@ -301,12 +305,15 @@ class Game(object):
             
     def QlearnSpread(self, aScore):
         for actions in self.theCumActions:
-            self.theDecisionMaker.update(actions, self.theDecisionMaker.get(actions)+aScore)
-
+            if self.theDecisionMaker.__contains__(actions):
+                self.theDecisionMaker[(actions)] = int(self.theDecisionMaker[actions])+aScore
+            else:
+                self.theDecisionMaker[(actions)]= aScore
+    
     def main_loop(self, optimizing=True):
         counterInLoop=0
         while self.running:
-            counterInLoop=counterInLoop+1
+
             BaddieShot.player = self.player
             CannonShot.player = self.player
             CannonShotbig.player = self.player
@@ -490,7 +497,8 @@ class Game(object):
                 self.highscore = self.score
 
             if self.player.alive():
-                self.time -= 0.060
+#                 self.time -= 0.060
+                self.time=self.time
             if self.time <= 0:
                 self.player.hit()
             if not optimizing:                        
@@ -526,21 +534,7 @@ class Game(object):
                     self.redo_level()
             pygame.display.flip()
             
-            
-            self.reward.append(self.score)
-            goodTimeToSpreadScore=False
-            
-            if counterInLoop>30:
-                counterInLoop=0
-                goodTimeToSpreadScore=True
-            
-            if goodTimeToSpreadScore:
-                self.QlearnSpread(sum(self.reward))
-                self.theCumActions=[]
-                goodTmeToSpreadScore=False
-                self.reward=[]
-            
-            
+
             if not self.running:
                 return
 
