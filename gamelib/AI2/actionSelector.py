@@ -6,6 +6,12 @@ from pygame.constants import K_LEFT, K_RIGHT, K_z
 from State import State
 
 
+
+class HashableRect(pygame.Rect):
+    def __hash__(self):
+        return hash(tuple(self))
+
+
 class validDecisions(Enum):
     DO_NOTHING = 0
 
@@ -62,6 +68,7 @@ def MarioAction(anEnum, aKey):
 #     @getAction.register(object, int)
 def getAction_0(aGame, aRandom=False):
     myKey = [False] * 1000
+
 
 
     myCurrentContext = State().EnvironmentCompressor(aGame)
