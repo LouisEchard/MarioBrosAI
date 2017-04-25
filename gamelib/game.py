@@ -191,7 +191,7 @@ class Game(object):
         self.reward = []
         self.highscore = 0
         self.score = 0
-        self.lives = 300
+        self.lives = 30000
         self.lvl   = 1
         if continuing:
             self.lvl = get_saved_level()

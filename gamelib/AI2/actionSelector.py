@@ -4,7 +4,7 @@ from enum import Enum
 from bokeh.util.session_id import random
 from pygame.constants import K_LEFT, K_RIGHT, K_z
 from State import State
-
+import numpy as np
 
 
 class HashableRect(pygame.Rect):
@@ -75,7 +75,7 @@ def getAction_0(aGame, aRandom=False):
 
     State().updatingScore(aGame,myCurrentContext)
 
-    if aRandom or random.random() < 0.2:
+    if aRandom or random.random() < np.exp(-0.05*aGame.counterInLoop):
         myEnum = random.choice(list(validDecisions))  # [TOTAL_ACTIONS*random.random]
     else:
         #         theBest=random.choice(list(validDecisions))
