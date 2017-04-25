@@ -2,7 +2,7 @@
 
 import pygame, random, math
 from pygame.locals import *
-
+from time import time
 from data import *
 import math
 from AI2 import actionSelector
@@ -102,6 +102,7 @@ class Player(Collidable):
         self.hit_sound = load_sound("stomp.ogg")
         self.spring_sound = load_sound("jump2.ogg")
         self.springing = False
+        self.t=0
 
     def kill(self):
         #pygame.mixer.music.stop()
@@ -155,12 +156,16 @@ class Player(Collidable):
         self.still_timer -= 1
         self.hit_timer -= 1
         dx = 0
-        
+
         if not optimizing:
             key = pygame.key.get_pressed()
-        if optimizing:
+        if optimizing and (time()-self.t)>0.2:
+            self.t=time()
             key = actionSelector.getAction_0(aGame,aRandom=False)
+        else:
+            key = self.pastKey
 
+        self.pastKey=key
         if key[K_z] and not self.springing:
             self.jump_accel = 0.3
         else:
