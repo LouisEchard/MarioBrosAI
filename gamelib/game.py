@@ -311,7 +311,7 @@ class Game(object):
             else:
                 self.theDecisionMaker[(actions)]= aScore
     
-    def main_loop(self, optimizing=True, showingAlgo=True):
+    def main_loop(self, optimizing=True, showingAlgo=False):
         counterInLoop=0
         while self.running:
 
@@ -324,7 +324,7 @@ class Game(object):
 
             self.boom_timer -= 1
 
-            self.clock.tick(60)
+            self.clock.tick(6000)
             self.camera.update()
             for s in self.sprites:
                 if isinstance(s, Player):
@@ -532,7 +532,7 @@ class Game(object):
                 else:
                     self.show_death()
                     self.lives -= 1
-                    self.score-=-1000
+                    self.score-=-50
                     self.redo_level()
             pygame.display.flip()
             

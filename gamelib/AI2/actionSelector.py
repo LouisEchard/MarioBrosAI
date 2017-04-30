@@ -91,7 +91,7 @@ def getAction_0(aGame, aKey, aRandom=False, aPres=False):
 
     State().updatingScore(aGame,myCurrentContext)
 
-    if aRandom or random.random() < 0.1:#np.exp(-0.05*aGame.counterInLoop):
+    if aRandom or random.random() < 0.05:#np.exp(-0.05*aGame.counterInLoop):
         myEnum = random.choice(list(validDecisions))  # [TOTAL_ACTIONS*random.random]
     elif(aPres):
         myEnum=inverseMarioAction(aKey)
