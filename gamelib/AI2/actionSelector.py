@@ -6,6 +6,7 @@ from pygame.constants import K_LEFT, K_RIGHT, K_z
 from State import State
 import numpy as np
 
+counter=0
 
 class HashableRect(pygame.Rect):
     def __hash__(self):
@@ -63,20 +64,37 @@ def MarioAction(anEnum, aKey):
 
     return aKey
 
+def inverseMarioAction(aKey):
+    myEnum=validDecisions.DO_NOTHING
+    if(aKey[K_z] == True and aKey[K_LEFT] == True):
+        myEnum=validDecisions.LEFT_JUMP
+    elif(aKey[K_z] == True and aKey[K_RIGHT] == True):
+        myEnum = validDecisions.RIGHT_JUMP
+    elif(aKey[K_LEFT] == True):
+        myEnum=validDecisions.LEFT
+    elif(aKey[K_RIGHT]==True):
+        myEnum=validDecisions.RIGHT
+    elif(aKey[K_z]==True):
+        myEnum=validDecisions.JUMP
+
+    return myEnum
+
+
 
 #     @classmethod
 #     @getAction.register(object, int)
-def getAction_0(aGame, aRandom=False):
+def getAction_0(aGame, aKey, aRandom=False, aPres=False):
     myKey = [False] * 1000
-
-
+    aGame.score=aGame.score-2
 
     myCurrentContext = State().EnvironmentCompressor(aGame)
 
     State().updatingScore(aGame,myCurrentContext)
 
-    if aRandom or random.random() < np.exp(-0.05*aGame.counterInLoop):
+    if aRandom or random.random() < 0.1:#np.exp(-0.05*aGame.counterInLoop):
         myEnum = random.choice(list(validDecisions))  # [TOTAL_ACTIONS*random.random]
+    elif(aPres):
+        myEnum=inverseMarioAction(aKey)
     else:
         #         theBest=random.choice(list(validDecisions))
         #         theBestValue=-1000

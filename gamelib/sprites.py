@@ -151,17 +151,20 @@ class Player(Collidable):
     def stop_attacking(self):
         self.shooting = False
 
-    def update(self,playerRef,aGame, optimizing=False, ):
+    def update(self,playerRef,aGame, optimizing=False, showingAlgo=True):
         self.frame += 1
         self.still_timer -= 1
         self.hit_timer -= 1
         dx = 0
-
+        key=pygame.key.get_pressed()
         if not optimizing:
             key = pygame.key.get_pressed()
-        if optimizing and (time()-self.t)>0.2:
+        elif optimizing and showingAlgo:
+            key = pygame.key.get_pressed()
+            actionSelector.getAction_0(aGame, key,aRandom=False, aPres =showingAlgo)
+        elif optimizing and (time()-self.t)>0.2:
             self.t=time()
-            key = actionSelector.getAction_0(aGame,aRandom=False)
+            key = actionSelector.getAction_0(aGame,key,aRandom=False)
         else:
             key = self.pastKey
 

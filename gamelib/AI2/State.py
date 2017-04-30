@@ -64,7 +64,7 @@ class State():
 
         aCurrentContext = (tuple(myListOfBaddies), tuple(myListOfCoins), tuple(myListOfCanon), tuple(myListOfGrass), \
                            tuple(myListOfPlatforms), tuple(myListOfBricks), tuple(myListOfFlowers),
-                           tuple(myListOfRoses),tuple(myListOfGMush))
+                           tuple(myListOfRoses),tuple(myListOfGMush), tuple([self.HashableRect(myPlayerRect)]))
 
         return aCurrentContext
         
@@ -73,16 +73,16 @@ class State():
         aGame.counterInLoop = aGame.counterInLoop + 1
 
         aGame.movementPoint = float(aGame.player.rect.x / 1) - float(aGame.oldPosition)
-        aGame.score = aGame.score + aGame.movementPoint
+        aGame.score = aGame.score + 3*aGame.movementPoint
         # self.reward.append(self.score)
         aGame.theQLearner.updateQValues(aGame.score,aNewState)
         goodTimeToSpreadScore = False
 
-        if aGame.counterInLoop > 30:
-            aGame.counterInLoop = 0
-            aGame.QlearnSpread(sum(aGame.reward))
-            aGame.theCumActions = []
-            aGame.reward = []
+        # if aGame.counterInLoop > 30:
+        #     aGame.counterInLoop = 0
+        #     aGame.QlearnSpread(sum(aGame.reward))
+        #     aGame.theCumActions = []
+        #     aGame.reward = []
 
         aGame.oldPosition = float(aGame.player.rect.x / 1)
 

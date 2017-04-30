@@ -11,6 +11,7 @@ from data import *
 from sprites import *
 from level import *
 from AI2.QLearning import QLearning
+from AI2 import Storage as store
 
 def RelRect(actor, camera):
     return Rect(actor.rect.x-camera.rect.x, actor.rect.y-camera.rect.y, actor.rect.w, actor.rect.h)
@@ -323,11 +324,11 @@ class Game(object):
 
             self.boom_timer -= 1
 
-            self.clock.tick(60)
+            self.clock.tick(600)
             self.camera.update()
             for s in self.sprites:
                 if isinstance(s, Player):
-                    s.update(self.player,self, optimizing)
+                    s.update(self.player,self, optimizing, showingAlgo=False)
                 else:
                     s.update()      
             
@@ -497,8 +498,9 @@ class Game(object):
                 self.highscore = self.score
 
             if self.player.alive():
-#                 self.time -= 0.060
+                self.time -= 0.060
                 self.time=self.time
+                self.score-=0.060
             if self.time <= 0:
                 self.player.hit()
             if not optimizing:                        
