@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d450566a-c5b6-4b8c-bdbe-29836766d689" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gamelib/AI2/Storage.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/Evaluation.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/LearningParams.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/LearningTask.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/Logger.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/MarioAIOptions.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/MarioAction.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/MarioRLAgent.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/MarioState.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/QTable.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/QTableAction.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/TransitionTable.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gamelib/AI/Utils.py" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/gamelib/AI/__init__.py" afterPath="$PROJECT_DIR$/gamelib/AI2/QStatesAndValues.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gamelib/AI2/QLearning.py" afterPath="$PROJECT_DIR$/gamelib/AI2/QLearning.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gamelib/AI2/State.py" afterPath="$PROJECT_DIR$/gamelib/AI2/State.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gamelib/AI2/actionSelector.py" afterPath="$PROJECT_DIR$/gamelib/AI2/actionSelector.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gamelib/game.py" afterPath="$PROJECT_DIR$/gamelib/game.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gamelib/sprites.py" afterPath="$PROJECT_DIR$/gamelib/sprites.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -389,7 +370,14 @@
       <option name="project" value="LOCAL" />
       <updated>1493135132241</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Q-Learning updated">
+      <created>1493560172030</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1493560172030</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -420,7 +408,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Q-learning basics" />
-    <option name="LAST_COMMIT_MESSAGE" value="Q-learning basics" />
+    <MESSAGE value="Q-Learning updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Q-Learning updated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
