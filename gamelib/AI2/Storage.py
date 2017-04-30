@@ -19,6 +19,8 @@ def save(dict):
         for key in obj:
             if(key==()):
                 myString = myString+"empty;"
+            elif(key==""):
+                myString=myString
             else:
                 if not isinstance(key[0], int):
                     myRect = key[0]
@@ -26,7 +28,7 @@ def save(dict):
                     myRect = key
                 myString=myString+str(myRect.left)+":"+str(myRect.top)+":"+str(myRect.width)+":"+str(myRect.height)+";"
 
-        if save:
+        if save and obj!=():
             file.write(myString+" ,Results ")
             for enum in VD:
                 if len(dict[obj])<5:
@@ -62,7 +64,7 @@ def load(dict):
                 if(myTuple!=myLastTuple):
                     dict[(myLastTuple)] = myArrayOfResults
                     myArrayOfResults=[]
-                myArrayOfResults.append(mySplitResults)
+                myArrayOfResults=mySplitResults
 
                 myLastTuple=myTuple
     return dict
