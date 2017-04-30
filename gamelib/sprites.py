@@ -157,7 +157,7 @@ class Player(Collidable):
         self.hit_timer -= 1
         dx = 0
         key=pygame.key.get_pressed()
-        if not optimizing:
+        if not optimizing and not showingAlgo:
             key = pygame.key.get_pressed()
         elif optimizing and showingAlgo:
             key = pygame.key.get_pressed()

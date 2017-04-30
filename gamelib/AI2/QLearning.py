@@ -38,7 +38,7 @@ class QLearning(object):
             aNewInstantReward + self.theGamma * self.getMaxQValue(aNewState))
             self.theQMap[self.thePreviousState][self.thePreviousAction.value]= myNewValue
 
-            if(self.theCounter>500):
+            if(self.theCounter>1000):
                 self.theCounter=1
                 store.save(self.theQMap)
         self.theCounter = self.theCounter + 1

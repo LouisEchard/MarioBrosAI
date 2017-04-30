@@ -275,7 +275,7 @@ class Game(object):
             self.level = Level(self.lvl)
             self.player = Player((0, 0))
             self.camera = Camera(self.player, self.level.get_size()[0])
-            self.score -= self.score
+            self.score = self.score
             self.highscore = self.highscore
             play_music("maintheme.ogg")
             #play_music("maintheme.ogg")
@@ -311,7 +311,7 @@ class Game(object):
             else:
                 self.theDecisionMaker[(actions)]= aScore
     
-    def main_loop(self, optimizing=True):
+    def main_loop(self, optimizing=True, showingAlgo=True):
         counterInLoop=0
         while self.running:
 
@@ -324,11 +324,11 @@ class Game(object):
 
             self.boom_timer -= 1
 
-            self.clock.tick(600)
+            self.clock.tick(60)
             self.camera.update()
             for s in self.sprites:
                 if isinstance(s, Player):
-                    s.update(self.player,self, optimizing, showingAlgo=False)
+                    s.update(self.player,self, optimizing, showingAlgo)
                 else:
                     s.update()      
             
@@ -503,15 +503,14 @@ class Game(object):
                 self.score-=0.060
             if self.time <= 0:
                 self.player.hit()
-            if not optimizing:                        
-                for e in pygame.event.get():
-                    if e.type == QUIT:
-                        sys.exit()
-                    if e.type == KEYDOWN:
-                        if e.key == K_ESCAPE:
-                            self.end()
-                        if e.key == K_z:
-                            self.player.jump() 
+            for e in pygame.event.get():
+                if e.type == QUIT:
+                    sys.exit()
+                if e.type == KEYDOWN:
+                    if e.key == K_ESCAPE:
+                        self.end()
+                    if e.key == K_z:
+                        self.player.jump()
 
                
                 #listen to the optimizer
@@ -533,6 +532,7 @@ class Game(object):
                 else:
                     self.show_death()
                     self.lives -= 1
+                    self.score-=-1000
                     self.redo_level()
             pygame.display.flip()
             
