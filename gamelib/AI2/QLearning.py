@@ -2,6 +2,7 @@ import numpy as np
 from actionSelector import validDecisions as VD
 from _random import Random
 import Storage as store
+import StateConvertor as convertor
 
 class QLearning(object):
     def __init__(self, name):
@@ -14,13 +15,27 @@ class QLearning(object):
     thePreviousQValue = 0
     thePreviousState=()
     ##constants
-    theLearningRate = 0.8
-    theGamma = 0.3
+    theLearningRate = 0.5
+    theGamma = 4
 
     def initializeQValuesForState(self, aState):
+
+
+        #test
+        # for key in self.theQMap.iterkeys():
+        #     aKey=key;
+        #     if(aKey==aState):
+        #         bou=69
+
+
+
         myQValues = []
-        for i in range(0,len(VD)):
-            myQValues.append(np.random.uniform(0, 1) * 0.2 - 0.1)
+        for i in range(0,len(VD)-1):
+            if(i==2):
+                myQValues.append(0.194 + np.random.uniform(0.05, 0.13))
+            else:
+                myQValues.append(np.random.uniform(0, 1) * 0.2 - 0.1)
+        myQValues.append(0.194+np.random.uniform(0.1, 0.23))
 
         self.theQMap[aState]= myQValues
         return myQValues
@@ -38,7 +53,7 @@ class QLearning(object):
             aNewInstantReward + self.theGamma * self.getMaxQValue(aNewState))
             self.theQMap[self.thePreviousState][self.thePreviousAction.value]= myNewValue
 
-            if(self.theCounter>1000):
+            if(self.theCounter>10000):
                 self.theCounter=1
                 store.save(self.theQMap)
         self.theCounter = self.theCounter + 1

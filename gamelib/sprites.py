@@ -162,7 +162,7 @@ class Player(Collidable):
         elif optimizing and showingAlgo:
             key = pygame.key.get_pressed()
             actionSelector.getAction_0(aGame, key,aRandom=False, aPres =showingAlgo)
-        elif optimizing and (time()-self.t)>0.2:
+        elif optimizing and (time()-self.t)>0.15:
             self.t=time()
             key = actionSelector.getAction_0(aGame,key,aRandom=False)
         else:

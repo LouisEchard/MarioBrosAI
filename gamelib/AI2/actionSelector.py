@@ -85,14 +85,17 @@ def inverseMarioAction(aKey):
 #     @getAction.register(object, int)
 def getAction_0(aGame, aKey, aRandom=False, aPres=False):
     myKey = [False] * 1000
-    aGame.score=aGame.score-2
+    aGame.score=aGame.score-1
 
     myCurrentContext = State().EnvironmentCompressor(aGame)
 
-    State().updatingScore(aGame,myCurrentContext)
 
-    if aRandom or random.random() < 0.05:#np.exp(-0.05*aGame.counterInLoop):
+    State().updatingScore(aGame, myCurrentContext)
+
+    if aRandom or random.random() < 0.10:#np.exp(-0.20*aGame.counterInLoop):
         myEnum = random.choice(list(validDecisions))  # [TOTAL_ACTIONS*random.random]
+    elif random.random()<0.1:
+        myEnum=validDecisions.DO_NOTHING
     elif(aPres):
         myEnum=inverseMarioAction(aKey)
     else:
@@ -105,6 +108,7 @@ def getAction_0(aGame, aKey, aRandom=False, aPres=False):
         #                     theBest=context[2]
         #                     theBestValue=aGame.theDecisionMaker.get(context)
         theBest = aGame.theQLearner.getBestAction(aGame, myCurrentContext)
+
 
         myEnum = theBest  # list(validDecisions)[actionNumber]
 

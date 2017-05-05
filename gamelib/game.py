@@ -192,6 +192,7 @@ class Game(object):
         self.reward = []
         self.highscore = 0
         self.score = 0
+        self.oldScore=0
         self.lives = 30000
         self.lvl   = 1
         if continuing:
@@ -246,6 +247,7 @@ class Game(object):
         self.time = 40000
         self.booming = True
         self.boom_timer = 0
+        self.score=self.score+2000000
         try:
             self.lvl += 1
             if self.lvl == 5:
@@ -258,10 +260,11 @@ class Game(object):
             self.intro_level()
         except:
             if self.lives == 0: # Fix =)
-                self.lives += 1   
-            cutscene(self.screen,
-            ['This was only a test version',
-             'press enter to end'])
+                self.lives += 1
+            self.redo_level_1()
+            # cutscene(self.screen,
+            # ['This was only a test version',
+            #  'press enter to end'])
              
     
             self.end()
@@ -272,6 +275,24 @@ class Game(object):
         self.time = 40000
         if self.running:
             self.clear_sprites()
+            self.level = Level(self.lvl)
+            self.player = Player((0, 0))
+            self.camera = Camera(self.player, self.level.get_size()[0])
+            self.score = self.score/2
+            self.highscore = self.highscore
+            play_music("maintheme.ogg")
+            #play_music("maintheme.ogg")
+            if self.lvl == 5:
+                play_music("castle.ogg")
+
+
+    def redo_level_1(self):
+        self.booming = False
+        self.boom_timer = 0
+        self.time = 40000
+        if self.running:
+            self.clear_sprites()
+            self.lvl= 1
             self.level = Level(self.lvl)
             self.player = Player((0, 0))
             self.camera = Camera(self.player, self.level.get_size()[0])
@@ -304,14 +325,14 @@ class Game(object):
         for s in self.sprites:
             pygame.sprite.Sprite.kill(s)
             
-    def QlearnSpread(self, aScore):
-        for actions in self.theCumActions:
-            if self.theDecisionMaker.__contains__(actions):
-                self.theDecisionMaker[(actions)] = int(self.theDecisionMaker[actions])+aScore
-            else:
-                self.theDecisionMaker[(actions)]= aScore
+    # def QlearnSpread(self, aScore):
+    #     for actions in self.theCumActions:
+    #         if self.theDecisionMaker.__contains__(actions):
+    #             self.theDecisionMaker[(actions)] = int(self.theDecisionMaker[actions])+aScore
+    #         else:
+    #             self.theDecisionMaker[(actions)]= aScore
     
-    def main_loop(self, optimizing=True, showingAlgo=False):
+    def main_loop(self, optimizing=True, showingAlgo=True):
         counterInLoop=0
         while self.running:
 
@@ -336,7 +357,7 @@ class Game(object):
                 if self.player.rect.colliderect(b.rect):
                     self.show_end()
                     self.next_level()
-                    self.score += 500
+                    self.score += 5000
             for s in self.shots:
                 if not s.rect.colliderect(self.camera.rect):
                     s.kill()
@@ -378,7 +399,8 @@ class Game(object):
                     c.kill()
                     self.coin_sound.play()
                     CoinDie(c.rect.center)
-                    self.score += 50
+                    self.score += 500
+
  
             for p in self.movingplatformtwos:
                 p.collide(self.players)
@@ -448,7 +470,7 @@ class Game(object):
                 if self.player.rect.colliderect(b.rect) and not b.dead:
                     self.player.hit()
                 if b.die_time <= 0 and b.dead and not self.explosions:
-                    pygamesprite.Sprite.kill(b)
+                    pygame.Sprite.kill(b)
                     self.next_level()
                 if b.die_time > 0:
                     for s in self.shots:
@@ -458,7 +480,8 @@ class Game(object):
                         
             if self.player.rect.right > self.camera.world.w:
                 if not self.bombs and self.lvl < 30:
-                    self.next_level()
+                    # self.next_level()
+                    self.redo_level()
                 else:
                     self.player.rect.right = self.camera.world.w
         
@@ -478,7 +501,7 @@ class Game(object):
                         self.player.jump_speed = -3
                         self.player.jump_speed = -5
                         self.player.rect.bottom = b.rect.top-1
-                        self.score += 100
+                        self.score += 3000
                         self.baddie_sound.play()
                         BaddieBoom(b.rect.center, b.speed, b.type)
                     else:
@@ -500,7 +523,7 @@ class Game(object):
             if self.player.alive():
                 self.time -= 0.060
                 self.time=self.time
-                self.score-=0.060
+                self.score-=0.00060
             if self.time <= 0:
                 self.player.hit()
             for e in pygame.event.get():
@@ -527,12 +550,13 @@ class Game(object):
                 pygame.draw.rect(self.screen, (255, 0, 0), (170, 64, b.hp*60, 32))
                 pygame.draw.rect(self.screen, (0, 0, 0), (170, 64, 300, 32), 1)
             if not self.player.alive() and not self.playerdying:
+                self.oldPosition=float(self.player.rect.x / 1)
                 if self.lives <= 0:
                     self.gameover_screen()
                 else:
                     self.show_death()
                     self.lives -= 1
-                    self.score-=-50
+                    self.score-=100000
                     self.redo_level()
             pygame.display.flip()
             
